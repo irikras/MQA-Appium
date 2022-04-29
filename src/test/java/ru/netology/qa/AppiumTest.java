@@ -3,19 +3,16 @@ package ru.netology.qa;
 import io.appium.java_client.android.AndroidDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import ru.netology.qa.screens.Locator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AppiumTest {
-
     private AndroidDriver driver;
-
     @BeforeAll
     public void setUp() throws MalformedURLException {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
@@ -31,7 +28,7 @@ public class AppiumTest {
 
         driver = new AndroidDriver(remoteUrl, desiredCapabilities);
     }
-
+    @Order(1)
     @Test
     public void testEmptyText() {
         Locator locator = new Locator(driver);
@@ -41,7 +38,7 @@ public class AppiumTest {
 
         assertEquals(textBefore, locator.textToBeChanged.getText());
     }
-
+    @Order(2)
     @Test
     public void testNewActivity() {
         Locator locator = new Locator(driver);
@@ -51,7 +48,6 @@ public class AppiumTest {
 
         assertEquals(textToSet, locator.resultText.getText());
     }
-
     @AfterAll
     public void tearDown() {
         driver.quit();
